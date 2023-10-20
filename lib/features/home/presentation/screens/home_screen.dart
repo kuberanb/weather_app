@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:weather_app/core/colors.dart';
 import 'package:weather_app/core/constants.dart';
 import 'package:weather_app/dialog_box/exit_dialog_box.dart';
+import 'package:weather_app/features/home/presentation/widgets/additional_information_tab.dart';
 import 'package:weather_app/features/home/presentation/widgets/current_weather.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,6 +21,8 @@ class HomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.black,
           centerTitle: true,
           title: const Text(
             'Weather App',
@@ -27,16 +30,40 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              kHeight10,
-              CurrentWeather(),
-              kHeight30,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center, 
-                children: [Text('Additional Information',style: TextStyle(color: kGreyColor,fontSize: 22,fontWeight: FontWeight.w500),)],),    
-            
-            ],
+          child: Container(
+            width: screenWidth,
+            height: screenHeight,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/image_blue.jpeg')),
+            ),
+            child: Column(
+              children: [
+                kHeight10,
+                const CurrentWeather(),
+                kHeight30,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text(
+                      'Additional Information',
+                      style: TextStyle(
+                          color: kWhiteColor,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(right: 20, left: 20),
+                  child: Divider(
+                    color: kGreyColor,
+                  ),
+                ),
+                AdditionalInformationTab(),
+              ],
+            ),
           ),
         ),
       ),

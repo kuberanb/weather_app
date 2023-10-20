@@ -32,12 +32,13 @@ class CurrentWeather extends StatelessWidget {
             ),
           ),
           // kHeight5,
-          Text('28.3', style: TextStyle(fontSize: 50, letterSpacing: 2)),
+          Text('28.3', style: TextStyle(fontSize: 50, letterSpacing: 2,color: kLightWhiteColor)), 
           Text('Kochi',
               style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: kGreyColor)),
+                  fontWeight: FontWeight.w400,color: kGreyColor,
+                  letterSpacing: 3,  
+                   )), 
         ],
       ),
     );
