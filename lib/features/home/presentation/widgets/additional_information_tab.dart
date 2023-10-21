@@ -5,7 +5,20 @@ import 'package:weather_app/core/constants.dart';
 import 'additional_information_listtile.dart';
 
 class AdditionalInformationTab extends StatelessWidget {
-  const AdditionalInformationTab({super.key});
+  String windValue;
+  String presureValue;
+  String humidityValue;
+  String feelsLikeValue;
+  String lattitudeValue;
+  String longitudeValue;
+  AdditionalInformationTab(
+      {super.key,
+      required this.windValue,
+      required this.presureValue,
+      required this.humidityValue,
+      required this.feelsLikeValue,
+      required this.lattitudeValue,
+      required this.longitudeValue,});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +27,7 @@ class AdditionalInformationTab extends StatelessWidget {
     return Container(
       width: screenWidth,
       height: .3 * screenHeight,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
           // image: DecorationImage(
           //   fit: BoxFit.fill,
           //     image: AssetImage('assets/images/image_blue.jpeg')),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/core/colors.dart';
 import 'package:weather_app/core/constants.dart';
 import 'package:weather_app/dialog_box/exit_dialog_box.dart';
+import 'package:weather_app/features/home/presentation/home/home_bloc.dart';
 import 'package:weather_app/features/home/presentation/widgets/additional_information_tab.dart';
 import 'package:weather_app/features/home/presentation/widgets/current_weather.dart';
 
@@ -14,6 +16,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) { 
+        BlocProvider.of<HomeBloc>(context).add(FetchLocation());
+      },
+    );
     return WillPopScope(
       onWillPop: () async {
         showExitDialog(context);
@@ -61,7 +68,14 @@ class HomeScreen extends StatelessWidget {
                     color: kGreyColor,
                   ),
                 ),
-                AdditionalInformationTab(),
+                AdditionalInformationTab(
+                  feelsLikeValue: '24.6',
+                  humidityValue: '2',
+                  lattitudeValue: '25',
+                  longitudeValue: '10',
+                  presureValue: '1012',
+                  windValue: '24',
+                ),
               ],
             ),
           ),

@@ -8,7 +8,7 @@ import 'package:weather_app/features/common%20widgets/show_snackbar.dart';
 
 class LocationHelper {
   bool isLoading = true;
-  static Future<Position?> getCurrentLocation(BuildContext context) async {
+  static Future<Position?> getCurrentLocation() async {
     try {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -22,16 +22,16 @@ class LocationHelper {
         if (permission == PermissionStatus.denied) {
           // Permission denied, show Snackbar message and return null
           // ignore: use_build_context_synchronously
-          showSnackBar(context,
-              'Please grant location permission to acess this feature');
-          return null;
+          // showSnackBar(context,
+          //     'Please grant location permission to acess this feature');
+          // return null;
         }
 
         if (permission == PermissionStatus.permanentlyDenied) {
           // Permission permanently denied, show Snackbar message and open app settings
           // ignore: use_build_context_synchronously
-          showSnackBar(context,
-              'Please grant location permission in app settings to use this feature');
+          // showSnackBar(context,
+          //     'Please grant location permission in app settings to use this feature');
           await openAppSettings();
           return null;
         }
@@ -48,7 +48,7 @@ class LocationHelper {
       if (permission == PermissionStatus.denied) {
         // Permission denied, show Snackbar message and return null
         // ignore: use_build_context_synchronously
-        showSnackBar(context, 'Please grant permission to acess this feature');
+        // showSnackBar(context, 'Please grant permission to acess this feature');
 
         return null;
       }
@@ -57,8 +57,8 @@ class LocationHelper {
       if (permission == PermissionStatus.permanentlyDenied) {
         // Permission permanently denied, show Snackbar message and open app settings
         // ignore: use_build_context_synchronously
-        showSnackBar(context,
-            'Please grant location permission in app settings to use this feature');
+        // showSnackBar(context,
+        //     'Please grant location permission in app settings to use this feature');
 
         await openAppSettings();
         return null;
@@ -70,7 +70,7 @@ class LocationHelper {
       );
     } catch (e) {
       log(e.toString());
-      showSnackBar(context, e.toString());
+      // showSnackBar(context, e.toString());
     }
   }
 }
