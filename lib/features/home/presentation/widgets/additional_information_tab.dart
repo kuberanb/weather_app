@@ -63,7 +63,7 @@ class AdditionalInformationTab extends StatelessWidget {
             rowTitle: 'Longitude',
             rowValue: '10',
           ),
-          kHeight10,
+        //  kHeight10,
         ],
       ),
     );

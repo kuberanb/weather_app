@@ -9,7 +9,8 @@ class WeatherDataUseCase {
 
   Future<WeatherDataModel?> call(
       {required String lattitude, required String longitude}) async {
-    final weatherData = _repository.getCurrentWeather(
+    final weatherData = await _repository.getCurrentWeather(
         lattitude: lattitude, longitude: longitude);
+        return weatherData;
   }
 }

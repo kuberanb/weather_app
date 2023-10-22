@@ -1,3 +1,3 @@
 
 
-const apiKey = 'https://api.weatherapi.com/v1/'; 
+const apiKey = '2b7913934ce443fea1190515232010'; 

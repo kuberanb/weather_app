@@ -1,5 +1,6 @@
 // home_bloc.dart
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,24 +20,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         // Emit a loading state to inform the UI that the operation is in progress.
         emit(HomeLoading());
 
-        // Use LocationHelper or Geolocator to fetch the current location.
-        final location = await LocationHelper.getCurrentLocation();
+        ConnectivityResult connectivityResult =
+            await Connectivity().checkConnectivity();
 
-        if (location != null) {
-          // Location was successfully obtained. You can perform additional actions here.
-
-          // Dispatch another event to fetch weather data using the obtained location.
-          final weatherData = await weatherDataUseCase(
-            lattitude: location.latitude.toString(),
-            longitude: location.longitude.toString(),
-          );
-
-          if (weatherData != null) {
-            emit(HomeLoaded(weatherData));
-          }
+        if (connectivityResult == ConnectivityResult.none) {
+          emit(HomeError('No Internet Connection, Try Again'));
         } else {
-          // Handle the case where the location could not be obtained.
-          emit(HomeError('Failed to fetch location.'));
+          // Use LocationHelper or Geolocator to fetch the current location.
+          final location = await LocationHelper.getCurrentLocation();
+
+          if (location != null) {
+            // Location was successfully obtained. You can perform additional actions here.
+
+            // Dispatch another event to fetch weather data using the obtained location.
+            final weatherData = await weatherDataUseCase.call(
+              lattitude: location.latitude.toString(),
+              longitude: location.longitude.toString(),
+            );
+
+            if (weatherData != null) {
+              emit(HomeLoaded(weatherData));
+            }
+          } else {
+            // Handle the case where the location could not be obtained.
+            emit(HomeError('Failed to fetch location.'));
+          }
         }
       } catch (e) {
         // Handle any potential exceptions or errors that may occur during the location fetch.

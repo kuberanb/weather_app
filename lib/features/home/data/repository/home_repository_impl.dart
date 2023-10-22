@@ -22,7 +22,8 @@ class HomeRepositoryImpl implements HomeRepository {
       if (results == null) {
         return null;
       } else {
-        return WeatherDataModel.fromJson(json.decode(results.toString()));
+        return results; 
+        //WeatherDataModel.fromJson(json.decode(results.toString())); 
       }
     } on DioException catch (e) {
       print('Dio Exception Occured in HomeRepositoryImpl : $e');
