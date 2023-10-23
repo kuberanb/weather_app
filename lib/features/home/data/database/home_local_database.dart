@@ -51,14 +51,25 @@ class HomeLocalDatabaseImpl implements HomeLocalDatabase {
   @override
   Future<void> storeHomeData(WeatherDataModel weatherDataModel) async {
     final db = await database;
-    await db.insert(
-      'weather_data',
-      {
-        'data': json.encode(weatherDataModel.toJson()),
-      },
-      conflictAlgorithm: ConflictAlgorithm.replace,
+
+    final List<Map<String, dynamic>> tables = await db.rawQuery(
+      "SELECT name FROM sqlite_master WHERE type='table' AND name='weather_data'",
     );
-    print("weather data inserted locally sucessfully");
+    if (tables.isNotEmpty) {
+      await db.execute('DROP TABLE IF EXISTS weather_data');
+      print('weather_data table deleted sucessfully');
+    } else {
+      await _createTables(db, 1); // Ensure the table exists
+
+      await db.insert(
+        'weather_data',
+        {
+          'data': json.encode(weatherDataModel.toJson()),
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+      print("weather data inserted locally sucessfully");
+    }
   }
 
   @override
