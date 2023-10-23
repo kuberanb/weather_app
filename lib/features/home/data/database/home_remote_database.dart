@@ -24,7 +24,7 @@ class HomeRemoteDatabaseImpl implements HomeRemoteDatabase {
     print("longitude : $longitude");
     Response response = await dio.get(
         '${ApiEndPoints.baseUrl}current.json?key=$apiKey&q=$lattitude,$longitude&aqi=no');
-    print('home Remote Database Api Response : ${response}');
+    print('home Remote Database Api Response : $response'); 
 
     if (response.statusCode == 200) {
       weatherDataModel =

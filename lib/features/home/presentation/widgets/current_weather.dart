@@ -50,15 +50,18 @@ class CurrentWeather extends StatelessWidget {
                 letterSpacing: 2,
                 color: kLightWhiteColor,
               )),
-          Text(
-              //'Kochi'
-              weatherCondition,
-              style: const TextStyle(
-                fontSize: 22,  
-                fontWeight: FontWeight.w400,
-                color: kGreyColor,
-                letterSpacing: 10,   
-              )),
+          Align(
+            alignment: Alignment.center, 
+            child: Text(
+                //'Kochi'
+                weatherCondition,
+                style: const TextStyle(
+                  fontSize: 22,  
+                  fontWeight: FontWeight.w400,
+                  color: kGreyColor,
+                  letterSpacing: 10,   
+                )),
+          ),
           Text(
               //'Kochi'
               currentCity,

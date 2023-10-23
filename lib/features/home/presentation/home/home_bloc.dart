@@ -23,10 +23,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ConnectivityResult connectivityResult =
             await Connectivity().checkConnectivity();
 
+        // if (connectivityResult == ConnectivityResult.none) {
+        //   emit(HomeError('No Internet Connection, Try Again'));
+        // } else {
+        // Use LocationHelper or Geolocator to fetch the current location.
+
         if (connectivityResult == ConnectivityResult.none) {
-          emit(HomeError('No Internet Connection, Try Again'));
+          final weatherData = await weatherDataUseCase.call(
+            lattitude: '13',
+            longitude: '25',
+          );
+
+          if (weatherData != null) {
+            emit(HomeLoaded(weatherData));
+          }
         } else {
-          // Use LocationHelper or Geolocator to fetch the current location.
           final location = await LocationHelper.getCurrentLocation();
 
           if (location != null) {
@@ -46,6 +57,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             emit(HomeError('Failed to fetch location.'));
           }
         }
+
+        //  }
       } catch (e) {
         // Handle any potential exceptions or errors that may occur during the location fetch.
         emit(HomeError('An error occurred: $e'));
