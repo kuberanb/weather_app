@@ -9,3 +9,5 @@
  const kWhiteColor = Colors.white;  
 
  const kLightWhiteColor = Color.fromARGB(255, 193, 191, 191);
+
+ const kYellowColor = Colors.yellow;
