@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
     "delhi"
   ];
 
-  String dropDownSelectedValue = '';
+  // String dropDownSelectedValue = '';
 
   int radioValue = 1;
 
@@ -63,9 +63,10 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           state2.ErrorText.toString(),
-                          style: const TextStyle(fontSize: 22,letterSpacing: 5), 
+                          style:
+                              const TextStyle(fontSize: 22, letterSpacing: 5),
                         ),
-                        kHeight10, 
+                        kHeight10,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -131,56 +132,76 @@ class HomeScreen extends StatelessWidget {
 
                                 ///////////////////
 
-                                DropdownButtonFormField<String>(
-                                  onChanged: (value) {
-                                    if (value != null) {
-                                      dropDownSelectedValue = value;
-                                    }
-                                  },
-                                  onTap: () {},
-                                  // validator: (value) {
-                                  //   if (value == null || value.isEmpty) {
-                                  //     return 'Please select your category.';
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  // key: dropdownKeyCategory,
-                                  hint: const Text(
-                                    'Select a category',
-                                    // style: GoogleFonts.montserrat(
-                                    //   fontWeight: FontWeight.w400,
-                                    //   fontSize: 15,
-                                    // ),
-                                  ),
-                                  decoration: InputDecoration(
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    contentPadding: const EdgeInsets.all(10),
-                                    border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide.none, // Remove the border
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  // value: '1',
-                                  // value: '$selectedCategory   $selectedCategoryPercent',
-                                  items: List.generate(dropdownList.length,
-                                      (index) {
-                                    return DropdownMenuItem<String>(
-                                      onTap: () {
-                                        // categoryId = state
-                                        //     .complaintCategorylist[index]
-                                        //     .complaintCatId;
+                                BlocBuilder<RegisterBloc, RegisterState>(
+                                  builder: (context, state) {
+                                    return DropdownButtonFormField<String>(
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          // dropDownSelectedValue = value;
+                                          BlocProvider.of<RegisterBloc>(context)
+                                              .add(selectDropdownValue(
+                                                  selectedDropdownValue:
+                                                      value));
+
+                                          print(
+                                              'selected dropdown value :${state.selectedValue}');
+                                        }
                                       },
-                                      value: dropdownList[index],
-                                      child: Text(dropdownList[index]
-                                          // style: GoogleFonts.montserrat(
-                                          //   fontWeight: FontWeight.w400,
-                                          //   fontSize: 15,
-                                          // ),
+                                      onTap: () {},
+                                      // validator: (value) {
+                                      //   if (value == null || value.isEmpty) {
+                                      //     return 'Please select your category.';
+                                      //   }
+                                      //   return null;
+                                      // },
+                                      // key: dropdownKeyCategory,
+                                      hint: const Text(
+                                        'Select a category',
+                                        // style: GoogleFonts.montserrat(
+                                        //   fontWeight: FontWeight.w400,
+                                        //   fontSize: 15,
+                                        // ),
+                                      ),
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                        contentPadding:
+                                            const EdgeInsets.all(10),
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide
+                                              .none, // Remove the border
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      // value: '1',
+                                      // value: '$selectedCategory   $selectedCategoryPercent',
+                                      value: state.selectedValue == 'Initial'
+                                          ? null
+                                          : state.selectedValue,
+
+                                      items: List.generate(dropdownList.length,
+                                          (index) {
+                                        return DropdownMenuItem<String>(
+                                          onTap: () {
+                                            // categoryId = state
+                                            //     .complaintCategorylist[index]
+                                            //     .complaintCatId;
+                                          },
+                                          value: dropdownList[
+                                              index], // dropdownList[index]
+                                          child: Text(
+                                            dropdownList[
+                                                index], // dropdownList[index]
+                                            // style: GoogleFonts.montserrat(
+                                            //   fontWeight: FontWeight.w400,
+                                            //   fontSize: 15,
+                                            // ),
                                           ),
+                                        );
+                                      }),
                                     );
-                                  }),
+                                  },
                                 ),
 
                                 //////////////////////////////////
@@ -328,7 +349,7 @@ class HomeScreen extends StatelessWidget {
                                                     context)
                                                 .add(RegisterEvent.register(
                                                     selectedValue:
-                                                        dropDownSelectedValue));
+                                                        state.selectedValue));
                                           },
                                           child: Container(
                                             width: double.infinity,

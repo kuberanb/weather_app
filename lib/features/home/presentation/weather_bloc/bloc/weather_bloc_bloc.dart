@@ -1,24 +1,25 @@
-// home_bloc.dart
-
+import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:weather_app/core/location_helper.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:weather_app/features/home/data/models/weather_data_model.dart';
-import 'package:weather_app/features/home/domain/use%20cases/home_use_case.dart';
+import 'package:weather_app/features/home/domain/use cases/home_use_case.dart';
 
-part '../home/home_event.dart';
-part '../home/home_state.dart'; 
+import '../../../../../core/location_helper.dart';
+part 'weather_bloc_event.dart';
+part 'weather_bloc_state.dart';
+part 'weather_bloc_bloc.freezed.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
+class WeatherBlocBloc extends Bloc<WeatherBlocEvent, WeatherBlocState> {
   final WeatherDataUseCase weatherDataUseCase;
 
-  HomeBloc(this.weatherDataUseCase) : super(HomeInitial()) {
+  WeatherBlocBloc(this.weatherDataUseCase) : super(WeatherBlocState.initial()) {
     on<FetchLocation>((event, emit) async {
       try {
         // Emit a loading state to inform the UI that the operation is in progress.
-        emit(HomeLoading());
+        emit(WeatherBlocState(
+          isLoading: true,
+          isError: false,
+        ));
 
         ConnectivityResult connectivityResult =
             await Connectivity().checkConnectivity();
@@ -35,7 +36,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
 
           if (weatherData != null) {
-            emit(HomeLoaded(weatherData));
+            emit(WeatherBlocState(
+              isLoading: false,
+              weatherDataModel: weatherData,
+              isError: false,
+            ));
+            // emit(DropDown1Loaded(''));
+          } else {
+            emit(WeatherBlocState(
+                isLoading: false, isError: true, ErrorText: 'No Internet'));
           }
         } else {
           final location = await LocationHelper.getCurrentLocation();
@@ -50,42 +59,35 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             );
 
             if (weatherData != null) {
-              emit(HomeLoaded(weatherData));
+              emit(WeatherBlocState(
+                isLoading: false,
+                weatherDataModel: weatherData,
+                isError: false,
+              ));
+              // emit(DropDown1Loaded(''));
             }
           } else {
             // Handle the case where the location could not be obtained.
-            emit(HomeError('Failed to fetch location.'));
+            // emit(HomeError('Failed to fetch location.'));
+
+            emit(WeatherBlocState(
+                isLoading: false,
+                isError: true,
+                ErrorText: 'Failed to fetch location'));
           }
         }
 
         //  }
       } catch (e) {
         // Handle any potential exceptions or errors that may occur during the location fetch.
-        emit(HomeError('An error occurred: $e'));
+        //  emit(HomeError('An error occurred: $e'));
+
+        emit(WeatherBlocState(
+          isLoading: false,
+          isError: true,
+          ErrorText: e.toString(),
+        ));
       }
     });
   }
-  // @override
-  // Stream<HomeState> mapEventToState(HomeEvent event) async* {
-  //   if (event is FetchLocation) {
-  //     yield HomeLoading();
-  //     final location = await LocationHelper.getCurrentLocation();
-
-  //     if (location != null) {
-  //       // Pass the location to your WeatherDataUseCase and handle the result
-  //       final weatherData = await weatherDataUseCase(
-  //         lattitude: location.latitude.toString(),
-  //         longitude: location.longitude.toString(),
-  //       );
-
-  //       if (weatherData != null) {
-  //         yield HomeLoaded(weatherData);
-  //       } else {
-  //         yield HomeError('Failed to fetch data.');
-  //       }
-  //     } else {
-  //       yield HomeError('Failed to fetch location.');
-  //     }
-  //   }
-  // }
 }
